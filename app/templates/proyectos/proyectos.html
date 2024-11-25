@@ -1,0 +1,46 @@
+<!-- proyectos/proyectos.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Mis Proyectos</h2>
+<button class="create-btn" onclick="window.location.href='{{ url_for('proyecto.crear_proyecto')}}'">Crear Proyecto</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for proyecto in proyectos %}
+        <tr>
+            <td>{{ proyecto.id_proyecto }}</td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.fechainicio }}</td>
+            <td>{{ proyecto.fechafin }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.estado }}</td>
+            <td>
+                <!-- Menú de acciones -->
+                <div class="dropdown">
+                    <button class="dropbtn">Elegir</button>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('proyecto.editar_proyecto', id=proyecto.id_proyecto) }}">Editar</a>
+                        <a href="{{ url_for('tarea.ver_tareas', id=proyecto.id_proyecto) }}">Tareas</a>
+                        
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

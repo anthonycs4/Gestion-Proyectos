@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Configurar Metodología para los Proyectos</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Metodología Asignada</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proyecto in proyecto %}
+        <tr>
+            <td>{{ proyecto.id_proyecto }}</td>
+            <td>{{ proyecto.nombre }}</td>
+            <td>{{ proyecto.fechainicio }}</td>
+            <td>{{ proyecto.fechafin }}</td>
+            <td>{{ proyecto.descripcion }}</td>
+            <td>{{ proyecto.estado }}</td>
+            <td>
+                {% if proyecto.metodologia_nombre %}
+                    {{ proyecto.metodologia_nombre }}  <!-- Muestra el nombre de la metodología asignada -->
+                {% else %}
+                    No asignada
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('metodologia.configurar_metodologia', id=proyecto.id_proyecto) }}">
+                    Cambiar Metodología
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

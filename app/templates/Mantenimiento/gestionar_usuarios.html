@@ -1,0 +1,38 @@
+<!-- templates/miembro_proyecto/gestionar_usuarios.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Gestionar Usuarios</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Proyecto</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario[1] }}</td> <!-- Nombre -->
+            <td>{{ usuario[2] }}</td> <!-- Apellido -->
+            <td>{{ usuario[3] }}</td> <!-- Correo -->
+            <td>{{ usuario[4] }}</td> <!-- Proyecto -->
+            <td>{{ usuario[5] }}</td> <!-- Rol -->
+            <td>{{ usuario[6] }}</td> <!-- Estado -->
+            <td>
+                <a href="{{ url_for('miembro.cambiar_rol', id_usuario=usuario[0]) }}">Cambiar Rol</a> |
+                <form action="{{ url_for('miembro.activar_desactivar', id_usuario=usuario[0]) }}" method="post" style="display:inline;">
+                    <button type="submit">{% if usuario[6] == 'Activo' %}Desactivar{% else %}Activar{% endif %}</button>
+                </form> |
+                <a href="{{ url_for('miembro.asignar_proyecto', id_usuario=usuario[0]) }}">Asignar Proyecto</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+
+{% block title %}Cronograma de Proyectos{% endblock %}
+
+{% block content %}
+<head>
+<style>
+    /* Estilos para los proyectos */
+.my-calendar-event-activo {
+    background-color: blue;  /* Azul para proyectos activos */
+}
+.my-calendar-event-inactivo {
+    background-color: gray;  /* Gris para proyectos inactivos */
+}
+
+/* Estilos para las tareas según su estado */
+.my-calendar-event-pendiente {
+    background-color: red;  /* Rojo para tareas pendientes */
+}
+
+.my-calendar-event-progreso {
+    background-color: yellow;  /* Amarillo para tareas en progreso */
+}
+
+.my-calendar-event-completado {
+    background-color: green;  /* Verde para tareas completadas */
+}
+
+/* Otras personalizaciones para la apariencia del evento */
+.my-calendar-event {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+.my-calendar-event-tooltip {
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1000;
+}
+</style>
+</head>
+    <h1>Cronograma de Proyectos</h1>
+
+    <!-- Iteramos sobre los proyectos -->
+    {% for proyecto in proyectos_con_tareas %}
+        <h2>{{ proyecto.proyecto.nombre }}</h2>
+        <p><strong>Fecha de Inicio:</strong> {{ proyecto.proyecto.fechainicio }} <br> <strong>Fecha de Fin:</strong> {{ proyecto.proyecto.fechafin }}</p>
+
+        <!-- Aquí va el calendario de FullCalendar para el proyecto -->
+        <div class="project-calendar" id="calendar-{{ proyecto.proyecto.id_proyecto }}"></div>
+
+        <!-- JQuery y FullCalendar -->
+        <script>
+            $(document).ready(function() {
+                $('#calendar-{{ proyecto.proyecto.id_proyecto }}').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    events: [
+                        {
+                            title: '{{ proyecto.proyecto.nombre }}',
+                            start: '{{ proyecto.proyecto.fechainicio }}',
+                            end: '{{ proyecto.proyecto.fechafin }}',
+                            className: 'my-calendar-event my-calendar-event-{{ proyecto.proyecto.estado|lower }}',  <!-- Establece el color según el estado -->
+                            description: 'Proyecto: {{ proyecto.proyecto.descripcion }}'
+                        },
+                        {% for tarea in proyecto.tareas %}
+                            {
+                                title: '{{ tarea.nombre }}',
+                                start: '{{ tarea.fecha_inicio }}',
+                                end: '{{ tarea.fecha_fin }}',
+                                className: 'my-calendar-event my-calendar-event-{{ tarea.estado|lower }}',  <!-- Color basado en el estado de la tarea -->
+                                description: 'Tarea: {{ tarea.descripcion }}\nAsignado a: {{ tarea.asignado_a }}',
+                                textColor: 'white',
+                                extendedProps: {
+                                    asignado_a: '{{ tarea.asignado_a }}',
+                                    descripcion: '{{ tarea.descripcion }}'
+                                }
+                            },
+                        {% endfor %}
+                    ],
+                    eventRender: function(event, element) {
+                        element.attr('title', event.description);
+                        element.hover(function() {
+                            var tooltip = $('<div class="my-calendar-event-tooltip"></div>').text(event.description);
+                            $('body').append(tooltip);
+                            tooltip.fadeIn(200);
+                        }, function() {
+                            $('.my-calendar-event-tooltip').remove();
+                        });
+                    },
+                    eventClick: function(event, jsEvent, view) {
+                        alert("Detalles del Evento:\n" + event.title + "\nDescripción: " + event.description);
+                    }
+                });
+            });
+        </script>
+    {% endfor %}
+    
+{% endblock %}

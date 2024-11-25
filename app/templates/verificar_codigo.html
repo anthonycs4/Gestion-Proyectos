@@ -1,0 +1,74 @@
+<style>
+    /* Estilos para el formulario de verificación */
+.verificacion-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.verificacion-form h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+</style>
+<div class="verificacion-form">
+    <h2>Verificación de Código</h2>
+    <form method="POST" action="{{ url_for('usuario.verificar_codigo') }}">
+        <div class="form-group">
+            <label for="codigo">Ingresa el código que te enviamos:</label>
+            <input type="text" name="codigo" id="codigo" placeholder="Código de verificación" required>
+        </div>
+        <button type="submit">Verificar</button>
+    </form>
+</div>
+
