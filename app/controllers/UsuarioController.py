@@ -35,10 +35,11 @@ def dashboard():
 def register():
     if request.method == 'POST':
         nombre = request.form['nombre']
+        apellido = request.form['apellido']
         email = request.form['email']
         password = request.form['password']
 
-        Usuario.registrar_usuario(nombre, email, password)
+        Usuario.registrar_usuario(nombre,apellido, email, password)
         
         flash('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.', 'success')
         return redirect(url_for('usuario.login'))  # Redirige al login después de registrar
@@ -124,7 +125,20 @@ def register_user():
         email = request.form['email']
         password = request.form['password']
         rol = request.form['rol']
+        print(f"Rol recibido: {rol}")
+
+        """ MODIFICADO PROYECTO, CONVERSION A INT """
         proyecto = request.form['proyecto']
+        if not proyecto.isdigit():
+            flash("Debe seleccionar un proyecto válido.", "danger")
+            return redirect(url_for('usuario.register_user'))
+
+        proyecto = int(proyecto)  # Ahora proyecto es un entero
+
+        proyecto = 19
+        estado = "Activo"
+        print(f"Proyecto recibido: {proyecto}")
+        
 
         # Registrar el usuario y obtener el ID
         registrado, resultado = Usuario.registrar_usuario(nombre, apellido, email, password)
@@ -133,13 +147,13 @@ def register_user():
             return redirect(url_for('usuario.register_user'))
 
         new_user_id = resultado  # Ahora resultado contiene el ID del usuario recién registrado
-        
+        print(f"Nuevo usuario id: {new_user_id}")
         # Insertar en Miembro_Proyecto
         cur = mysql.connection.cursor()
         cur.execute("""
-            INSERT INTO Miembro_Proyecto (id_usuario, id_rol, id_proyecto)
-            VALUES (%s, %s, %s)
-        """, (new_user_id, rol, proyecto))
+            INSERT INTO Miembro_Proyecto (id_usuario, id_rol, id_proyecto, estado)
+            VALUES (%s, %s, %s, %s)
+        """, (new_user_id, rol, proyecto, estado))
         mysql.connection.commit()
         cur.close()
 

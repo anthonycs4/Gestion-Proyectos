@@ -1,0 +1,12 @@
+Flask
+Flask-Login
+Flask-Mail
+Werkzeug
+FPDF
+pandas
+matplotlib
+mysql-connector-python
+bcrypt
+Flask-Bcrypt
+Flask-MySQLdb
+PyMySQL
