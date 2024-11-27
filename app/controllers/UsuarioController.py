@@ -135,7 +135,7 @@ def register_user():
 
         proyecto = int(proyecto)  # Ahora proyecto es un entero
 
-        proyecto = 19
+        
         estado = "Activo"
         print(f"Proyecto recibido: {proyecto}")
         
@@ -158,7 +158,7 @@ def register_user():
         cur.close()
 
         flash('¡Usuario registrado con éxito!', 'success')
-        return redirect(url_for('usuario.dashboard'))
+        return redirect(url_for('proyecto.dashboard'))
 
     # Obtener roles
     cur = mysql.connection.cursor()
