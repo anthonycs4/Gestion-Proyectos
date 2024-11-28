@@ -29,11 +29,11 @@
                 <li><a href="{{ url_for('tarea.notificaciones') }}">Notificaciones</a></li>
     
                 {% if session.get('role') == 'Líder de Proyecto' or session.get('role') == 'Administrador' %}
-                    <li><a href="{{ url_for('usuario.register_user') }}">Registro Usuario</a></li>
+                    <li><a href="{{ url_for('usuario.register_user') }}">Registro usuarios</a></li>
                     <li><a href="{{ url_for('Informe.gestionar_informes') }}">Informes de Estado</a></li>
                     <li><a href="{{ url_for('metodologia.ver_proyectos') }}">Configurar Metodología</a></li>
                 {% endif %}
-    
+                
                 {% if session.get('role') == 'Administrador' %}
                     <li><a href="{{ url_for('Informe.gestionar_reportes') }}">Reportes</a></li>
 

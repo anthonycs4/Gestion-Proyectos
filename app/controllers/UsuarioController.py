@@ -39,8 +39,20 @@ def register():
         email = request.form['email']
         password = request.form['password']
 
-        Usuario.registrar_usuario(nombre,apellido, email, password)
+        flag, user_id = Usuario.registrar_usuario(nombre,apellido, email, password)
         
+        rol = 1
+        estado = 'Activo'
+        print(flag, user_id)
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            INSERT INTO Miembro_Proyecto (id_usuario, id_rol, estado)
+            VALUES (%s, %s, %s)
+        """, (user_id, rol, estado))
+        mysql.connection.commit()
+        cur.close()
+
+
         flash('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.', 'success')
         return redirect(url_for('usuario.login'))  # Redirige al login después de registrar
     return render_template('index.html')
@@ -120,26 +132,16 @@ from app.models.proyecto import Proyecto  # Importa el modelo Proyecto si no est
 @login_required
 def register_user():
     if request.method == 'POST':
+        print(' INICIO POST ')
         nombre = request.form['nombre']
         apellido = request.form.get('apellido')
         email = request.form['email']
         password = request.form['password']
         rol = request.form['rol']
-        print(f"Rol recibido: {rol}")
-
-        """ MODIFICADO PROYECTO, CONVERSION A INT """
         proyecto = request.form['proyecto']
-        if not proyecto.isdigit():
-            flash("Debe seleccionar un proyecto válido.", "danger")
-            return redirect(url_for('usuario.register_user'))
-
-        proyecto = int(proyecto)  # Ahora proyecto es un entero
-
-        
         estado = "Activo"
-        print(f"Proyecto recibido: {proyecto}")
         
-
+        
         # Registrar el usuario y obtener el ID
         registrado, resultado = Usuario.registrar_usuario(nombre, apellido, email, password)
         if not registrado:
@@ -158,17 +160,20 @@ def register_user():
         cur.close()
 
         flash('¡Usuario registrado con éxito!', 'success')
+        print(' SE TERMINO EL METODO POST')
         return redirect(url_for('proyecto.dashboard'))
+    if request.method == 'GET':
+        print(' INICIO DE GET')
+        # Obtener roles
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id_rol, nombre FROM Rol")
+        roles = cur.fetchall()
 
-    # Obtener roles
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id_rol, nombre FROM Rol")
-    roles = cur.fetchall()
+        # Obtener proyectos del usuario
+        proyectos = Proyecto.obtener_proyectos_usuario(current_user.id)
+        proyectos_nombres = [(p.id_proyecto, p.nombre) for p in proyectos]
 
-    # Obtener proyectos del usuario
-    proyectos = Proyecto.obtener_proyectos_usuario(current_user.id)
-    proyectos_nombres = [(p.id_proyecto, p.nombre) for p in proyectos]
+        cur.close()
 
-    cur.close()
-
-    return render_template('Mantenimiento/register_user.html', roles=roles, proyectos=proyectos_nombres)
+        print(' SE TERMINO GET')
+        return render_template('Mantenimiento/register_user.html', roles=roles, proyectos=proyectos_nombres)

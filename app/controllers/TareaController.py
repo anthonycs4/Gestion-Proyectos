@@ -13,6 +13,7 @@ tarea_bp = Blueprint('tarea', __name__)  # Renombrado el Blueprint correctamente
 @tarea_bp.route('/proyecto/<int:id>/tareas', methods=['GET'])
 @login_required
 def ver_tareas(id):
+    
     # Obtener las tareas del proyecto usando el modelo
     tareas = Tarea.obtener_tareas_por_proyecto(id)  # Ahora obtenemos las tareas como diccionarios
     print(tareas)  # Verificar las tareas que llegan al controller
@@ -62,6 +63,7 @@ def ver_historial_tarea(id_proyecto, id_tarea):
 @tarea_bp.route('/proyecto/<int:id>/tareas/crear', methods=['POST'])
 @login_required
 def crear_tarea(id):
+    
     """Crea una nueva tarea en el proyecto."""
     nombre = request.form['nombre']
     descripcion = request.form['descripcion']

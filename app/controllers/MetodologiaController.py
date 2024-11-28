@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required
+
+from flask_login import login_required, current_user
 from app.extensions import mysql  # Importamos mysql desde extensions
 from app.models.metodologia import Metodologia
 
@@ -11,7 +12,9 @@ metodologia = Blueprint('metodologia', __name__)
 @login_required
 def ver_proyectos():
     # Obtener todos los proyectos con su metodología usando el modelo
-    proyectos = Metodologia.obtener_proyectos_con_metodologia()
+
+    
+    proyectos = Metodologia.obtener_proyectos_con_metodologia(current_user.id)
     
     # Obtener todas las metodologías disponibles usando el modelo
     metodologias = Metodologia.obtener_todas_metodologias()

@@ -1,6 +1,7 @@
 # app/models/metodologia.py
 
 from app.extensions import mysql
+from flask import session
 
 class Metodologia:
     @staticmethod
@@ -13,15 +14,17 @@ class Metodologia:
         return metodologias
 
     @staticmethod
-    def obtener_proyectos_con_metodologia():
-        """Obtener todos los proyectos con su metodología"""
+    def obtener_proyectos_con_metodologia(user_id):
+        """Obtener todos los proyectos con su metodología para un usuario específico"""
         cur = mysql.connection.cursor()
         cur.execute("""
             SELECT p.id_proyecto, p.nombre, p.fechainicio, p.fechafin, p.descripcion, p.estado, 
-                   m.nombre AS metodologia_nombre
+                m.nombre AS metodologia_nombre
             FROM Proyecto p
             LEFT JOIN Metodologia m ON p.id_metodologia = m.id_metodologia
-        """)
+            JOIN Miembro_Proyecto mp ON p.id_proyecto = mp.id_proyecto
+            WHERE mp.id_usuario = %s
+        """, (user_id,))  # Filtrar por el usuario a través de Miembro_Proyecto
 
         # Convertir la consulta a formato de diccionario
         proyectos = cur.fetchall()
@@ -30,6 +33,8 @@ class Metodologia:
 
         cur.close()
         return proyectos_dict
+
+    
     @staticmethod
     def actualizar_metodologia(id_metodologia, id_proyecto):
         """Actualizar la metodología de un proyecto"""

@@ -413,6 +413,8 @@ table th, table td {
     font-size: 14px;
 }
 
+
+
 table th {
     font-size: 16px;
     text-transform: uppercase;
@@ -426,14 +428,30 @@ table tr:hover {
     background-color: #f1f1f1;
 }
 
-table td a {
+/* table td a {
     color: #007bff;
     text-decoration: none;
     padding: 8px 12px;
     border: 1px solid #007bff;
     border-radius: 4px;
     transition: background-color 0.3s;
+} */
+
+table td a {
+    display: inline-block; /* Asegura que los enlaces sean bloques alineados */
+    color: #007bff;
+    text-decoration: none;
+    padding: 10px 16px; /* Espacio interno más grande */
+    margin: 5px 0; /* Espacio externo arriba y abajo */
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    line-height: 1.2; /* Ajusta la altura de las líneas */
+    text-align: center; /* Centra el texto dentro del enlace */
+    transition: background-color 0.3s;
+    width: 100%; /* Hace que ocupe todo el ancho de la celda */
+    box-sizing: border-box; /* Asegura que el ancho incluya bordes y padding */
 }
+
 
 table td a:hover {
     background-color: #007bff;

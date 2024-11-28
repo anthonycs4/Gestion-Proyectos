@@ -77,3 +77,14 @@ class Usuario(UserMixin):
         new_user_id = cur.lastrowid  # Obtener el ID del usuario recién creado
         cur.close()
         return True, new_user_id  # Devolver el ID en caso de éxito
+
+    """ def completar_registro(correo):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM Usuario WHERE correo = %s", (correo,))
+        if cur.fetchone():
+            cur.close()
+            return False, 'El correo ya está registrado.'
+        mysql.connection.commit()
+        cur.close()
+        new_user_id """
+        
