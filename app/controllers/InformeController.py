@@ -26,7 +26,7 @@ def ver_informes(id):
     return render_template('informes.html', informes=informes, id_proyecto=id)
 
 # Ruta para gestionar informes (ver y generar)
-@Informe.route('/proyecto/informes', methods=['GET', 'POST'])
+@Informe.route('/proyectos', methods=['GET', 'POST'])
 @login_required
 def gestionar_informes():
     cur = mysql.connection.cursor()

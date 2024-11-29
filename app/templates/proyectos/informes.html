@@ -7,7 +7,7 @@
     <h2>Generar y Visualizar Informes de Estado</h2>
 
     <!-- Formulario para generar un nuevo informe -->
-    <form method="POST" action="{{ url_for('generar_informe') }}">
+    <form method="POST" action="{{ url_for('Informe.generar_informe') }}">
         <div>
             <label for="proyecto">Seleccione un Proyecto:</label>
             <select name="proyecto" required>
@@ -53,8 +53,8 @@
                 <td>{{ informe[2] }}</td> <!-- Periodo -->
                 <td>{{ informe[3] }}</td> <!-- Fecha de generación -->
                 <td>
-                    <a href="{{ url_for('ver_informe', id_informe=informe[0]) }}">Ver Informe</a>
-                    <a href="{{ url_for('exportar_informe_pdf', id_informe=informe[0]) }}">Exportar PDF</a>
+                    <a href="{{ url_for('Informe.ver_informe', id_informe=informe[0]) }}">Ver Informe</a>
+                    <a href="{{ url_for('Informe.exportar_informe_pdf', id_informe=informe[0]) }}">Exportar PDF</a>
                 </td>
             </tr>
             {% endfor %}
